@@ -121,9 +121,15 @@ public class DialogueSystem : MonoBehaviour
 
     static readonly string STRINGNULL = "";
 
+    //SUCCESS CONSTANT
     const bool SUCCESSFUL = true;
+
+    //FAIL CONSTANT
     const bool FAILURE = false;
 
+    /// <summary>
+    /// Execute once instantiated 
+    /// </summary>
     void Awake()
     {
         Instance = this;
@@ -131,8 +137,13 @@ public class DialogueSystem : MonoBehaviour
         //Go into file, and check for all defined values
         try
         {
+            //Define the expressions used
             PARSER.Define_Expressions();
+
+            //Define the poses used
             PARSER.Define_Poses();
+
+            //Define the characters in the story
             PARSER.Define_Characters();
         }
         catch { }
@@ -223,6 +234,7 @@ public class DialogueSystem : MonoBehaviour
         }
 
     }
+
     static void ExcludeAllStyleTags(string _text)
     {
         //Bold
@@ -256,7 +268,7 @@ public class DialogueSystem : MonoBehaviour
         ExecutePoseFunctionTag(POSE, ref _text);
 
         //Halt tage
-        ExecuteWaitFunctionTag(HALT, ref _text);
+        ExecuteHaltFunctionTag(HALT, ref _text);
     }
 
     static bool ExcludeStyleTag(string _openTag, string _closeTag, ref string _line)
@@ -284,7 +296,7 @@ public class DialogueSystem : MonoBehaviour
         return FAILURE;
     }
 
-    #region This one works
+    #region Speed Tag Execution
     static bool ExecuteSpeedFunctionTag(Regex _tagExpression, ref string _line)
     {
         try
@@ -332,7 +344,7 @@ public class DialogueSystem : MonoBehaviour
     }
     #endregion
 
-    #region This one works
+    #region Action Tag Execution
     static bool ExecuteActionFunctionTag(Regex _tagExpression, ref string _line)
     {
         try
@@ -380,6 +392,7 @@ public class DialogueSystem : MonoBehaviour
     }
     #endregion
 
+    #region Insert Tag Execution
     static bool ExecuteInsertFunctionTag(Regex _tagExpression, ref string _line)
     {
         try
@@ -425,10 +438,11 @@ public class DialogueSystem : MonoBehaviour
         catch { }
 
         return FAILURE;
-    }
+    } 
+    #endregion
 
-    #region This one works
-    static bool ExecuteWaitFunctionTag(Regex _tagExpression, ref string _line)
+    #region Halt Tag Execution
+    static bool ExecuteHaltFunctionTag(Regex _tagExpression, ref string _line)
     {
         /*The wait command will take a 4 digit number.
          We will then convert this into a value that is easily understood
@@ -483,7 +497,7 @@ public class DialogueSystem : MonoBehaviour
     }
     #endregion
 
-    #region EXECUTE EXPRESSSION
+    #region Expression Tag Execution
     static bool ExecuteExpressionFunctionTag(Regex _tagExpression, ref string _line)
     {
         try
@@ -526,7 +540,7 @@ public class DialogueSystem : MonoBehaviour
     }
     #endregion
 
-    #region EXECUTE POSE
+    #region Pose Tag Execution
     static bool ExecutePoseFunctionTag(Regex _tagExpression, ref string _line)
     {
         try
